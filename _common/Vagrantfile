@@ -1,0 +1,17 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = ENV['VAGRANT_BOX']
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize [
+      "modifyvm", :id,
+      "--cpus", "1",
+      "--memory", "1024",
+    ]
+  end
+
+  config.vm.provision :serverspec do |spec|
+      spec.pattern = "#{ENV['SPEC_DIR']}/*_spec.rb"
+      spec.error_no_spec_files = false
+      spec.html_output = false
+    end
+end

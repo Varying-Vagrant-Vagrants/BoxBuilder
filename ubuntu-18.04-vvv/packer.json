@@ -1,0 +1,60 @@
+{
+  "variables": {
+    "cpus": "1",
+    "memory": "1024",
+    "headless": "true",
+    "name": "",
+    "output": "",
+    "virtualbox_source_path": "../builds/ubuntu-18.04-virtualbox/ubuntu-18.04.ovf"
+  },
+  "provisioners": [
+    {
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "../ubuntu-18.04/scripts/cleanup.sh",
+        "../ubuntu-18.04/scripts/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "builders": [
+    {
+      "boot_wait": "10s",
+      "checksum_type": "none",
+      "guest_additions_mode": "disable",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "{{user `output`}}-virtualbox",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "source_path": "{{ user `virtualbox_source_path` }}",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "type": "virtualbox-ovf",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{ user `memory` }}"
+        ]
+      ],
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{user `name`}}"
+    }
+  ],
+  "post-processors": [
+    {
+      "keep_input_artifact": true,
+      "output": "{{user `output`}}-{{.Provider}}.box",
+      "type": "vagrant"
+    }
+  ]
+}
