@@ -8,3 +8,10 @@ Scripts for building the VVV base box on vagrantcloud
 ```
 make
 ```
+
+## Prequisites
+
+ - vagrant
+ - virtualbox
+ - serverspec `gem install serverspec`
+ - make
