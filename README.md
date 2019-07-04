@@ -14,4 +14,5 @@ make
  - vagrant
  - virtualbox
  - serverspec `gem install serverspec`
+ - vagrant-serverspec plugin `vagrant plugin install vagrant-serverspec`
  - make
