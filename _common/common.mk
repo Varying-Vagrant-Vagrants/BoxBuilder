@@ -6,7 +6,12 @@ export COMMON_DIR := $(ROOT)/_common
 export NOW := $(shell date +%s)
 export PACKER_CACHE_DIR = $(ROOT)/.packer_cache
 export TEST_BASEDIR = $(ROOT)/.spec
-
+export SHELL := /usr/bin/env bash
+ifneq ("$(shell which packer)","")
+	export PACKER = $(shell which packer)
+else
+	export PACKER := ../bin/packer
+endif
 
 default:  clean build test copy
 
@@ -15,7 +20,7 @@ clean:
 	rm -f "$(BUILDS_DIR)/$(BOX_NAME)-virtualbox.box"
 
 build:
-	../bin/packer build -var "name=$(BOX_NAME)" -var "output=$(BUILDS_DIR)/$(BOX_NAME)" ./packer.json
+	$(PACKER) build -var "name=$(BOX_NAME)" -var "output=$(BUILDS_DIR)/$(BOX_NAME)" ./packer.json
 
 test:
 	$(call test_box,virtualbox)
@@ -32,10 +37,10 @@ define test_box
 	mkdir -p "$${TEST_DIR}"; \
 	cp "$(COMMON_DIR)/Vagrantfile" "$${TEST_DIR}/Vagrantfile"; \
 	pushd "$${TEST_DIR}"; \
-    vagrant up --provider=${1} || TEST_EC=$${?}; \
-    vagrant destroy -f; \
-    vagrant box remove --all $${VAGRANT_BOX}; \
-    popd; \
+	vagrant up --provider=${1} || TEST_EC=$${?}; \
+	vagrant destroy -f; \
+	vagrant box remove --all $${VAGRANT_BOX}; \
+	popd; \
 	rm -rf "$${TEST_DIR}"; \
 	exit $${TEST_EC}
 endef
