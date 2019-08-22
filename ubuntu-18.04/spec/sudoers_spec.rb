@@ -3,5 +3,5 @@ describe file('/etc/sudoers') do
 end
 
 describe file('/etc/sudoers.d/99_vagrant') do
-  its(:content) { should match 'vagrant ALL=(ALL) NOPASSWD:ALL' }
+  its(:content) { should match 'vagrant ALL=(ALL) NOPASSWD:ALL\n' }
 end
