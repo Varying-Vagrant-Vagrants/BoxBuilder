@@ -5,7 +5,7 @@
     "headless": "true",
     "checksum_type": "sha256",
     "checksum_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/SHA256SUMS",
-    "image_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.2-server-amd64.iso",
+    "image_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.3-server-amd64.iso",
     "name": "",
     "output": ""
   },
